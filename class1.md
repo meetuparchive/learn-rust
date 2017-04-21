@@ -56,13 +56,16 @@ These solutions make have notable different trade offs but also notable gains.
 
 Visit [this website](https://www.rust-lang.org/en-US/install.html)
 
-Rust utilizes a tool called [rustup](https://www.rustup.rs/) for managing tool installations
+Rust utilizes a tool called [rustup](https://www.rustup.rs/) for managing toolchain
+installations
 
 ```bash
 $ curl https://sh.rustup.rs -sSf | sh
 ```
 
-If you have rustup installed around you can update your local rust version with
+### Staying up to date
+
+If you have rustup installed, you can update your local rust toolchain version with
 
 ```bash
 $ rustup update stable
@@ -85,6 +88,12 @@ Rust will always provide at least two latest versions for use: `stable` and `nig
 ---
 
 ## What does Rust code look like?
+
+Rust comes from the `C` family of programming languages so it's syntax will
+already probably be familiar to you.
+
+However as you walk up Rusts abstraction stairs, you may find some doors that look
+unfamiliar. I'll cover those in just a bit. 
 
 ---
 
