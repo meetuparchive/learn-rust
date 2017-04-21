@@ -92,8 +92,68 @@ Rust will always provide at least two latest versions for use: `stable` and `nig
 Rust comes from the `C` family of programming languages so it's syntax will
 already probably be familiar to you.
 
-However as you walk up Rusts abstraction stairs, you may find some doors that look
-unfamiliar. I'll cover those in just a bit. 
+However as you walk up Rust's abstraction stairs, you may find some doors that look
+unfamiliar. I'll cover those in just a bit.
+
+---
+
+### applications
+
+All rust code is run as an executable application. These application are
+compiled down programs specialized to run on your native operating system.
+
+An application is just a program with a `main` function.
+
+```rust
+fn main() {
+  // code goes here
+}
+```
+
+If you are new to functions. I'll explain that in more detail in just a bit.
+For now, just note that this is all you need to for the minimal rust application.
+
+---
+
+### bootstrapping and running applications
+
+Remember `cargo`? `cargo` is Rust's official build tool. Cargo makes it easy
+to bootstrap applications.
+
+```bash
+$ cargo new --bin hello
+```
+
+This should have generated a directory called `hello` with some files inside.
+
+```bash
+$ ls hello/**
+hello/Cargo.toml
+
+hello/src:
+main.rs
+```
+
+cd in to `hello` directory and run `cargo run`
+
+You should see something like this
+
+```bash
+$ cargo run
+   Compiling hello v0.1.0 (file:///private/tmp/hello)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.87 secs
+     Running `target/debug/hello`
+Hello, world!
+```
+
+If you look at the contents of `src/main.rs` you'll find a pre-generated
+application ( with a `main` function )
+
+
+
+
+---
+
 
 ---
 
