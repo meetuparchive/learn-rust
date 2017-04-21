@@ -4,9 +4,10 @@
 programming language, also referred to as rustlang.
 
 
-<p align="center"><img src="ferris.jpg" alt="ferris" width="500"/></p>
-
-[credit](https://twitter.com/qedunham/status/774293932263870464)
+<p align="center">
+  <img src="ferris.jpg" alt="ferris" width="500"/><br/>
+  <a href="https://twitter.com/qedunham/status/774293932263870464">credit</a>
+</p>
 
 ## learning resources
 
