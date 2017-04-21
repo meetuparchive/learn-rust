@@ -87,10 +87,10 @@ Rust will always provide at least two latest versions for use: `stable` and `nig
 
 ---
 
-## What does Rust code look like?
+## What does Rust look like?
 
 Rust comes from the `C` family of programming languages so it's syntax will
-already probably be familiar to you.
+already probably be familiar to you, comments and delimiters included.
 
 However as you walk up Rust's abstraction stairs, you may find some doors that look
 unfamiliar. I'll cover those in just a bit.
@@ -99,8 +99,9 @@ unfamiliar. I'll cover those in just a bit.
 
 ### applications
 
-All rust code is run as an executable application. These application are
+All rust code is run as an executable binary application. These application are
 compiled down programs specialized to run on your native operating system.
+Rust calls these "targets".
 
 An application is just a program with a `main` function.
 
@@ -134,7 +135,7 @@ hello/src:
 main.rs
 ```
 
-cd in to `hello` directory and run `cargo run`
+step into the `hello` directory and run `cargo run`
 
 You should see something like this
 
@@ -150,9 +151,68 @@ If you look at the contents of `src/main.rs` you'll find a pre-generated
 application ( with a `main` function )
 
 
-
-
 ---
+
+### the very basics
+
+Let's use this application as our scratch pad.
+
+Rust language can be divided into two categories of abstractions: data and behavior.
+
+Let's focus on data first.
+
+#### data
+
+Rust supports a number of primitive types. Depending on where you're coming from,
+these may be greater in number than you may be used to.
+
+A piece of data's type determines it's shape and size. Size is very important in Rust.
+Types of have names but you can also bind data to a more contextual name within your application
+using two forms.
+
+### Naming types
+
+```rust
+type Foo = Bar;
+```
+
+
+
+The allocation of a type results in a value.
+
+Let's say type Bar exists but it's more useful to alias that name as `Foo` for your application.
+The `type` keyword allows for that. This is more useful when simplifying the name of a more
+complicated type.
+
+### assigning values
+
+In rust you assign values to names using the keywords `let`, `static`, or `const`
+
+```rust
+let foo = bar;
+```
+
+
+
+##### Numerics
+
+* `i8`, `i16`, `i32`, `i64`, `isize` signed types
+* `u8`, `u16`, `u32`, `u64`, `usize` unsigned types
+* `f32`, `f64` floating point types
+
+Why all these types!? You may ask. Recall that Rust aims to be memory efficient
+and as a dependency on knowing the size of types in order to provide certain
+safety guarantees for you. Each of these types is appropriately sized and its up
+to the engineer to chose the size that makes sense for your application.
+
+#### Tuples
+
+Tuples are like a collection where the elements of the collection may vary in
+specific types.
+
+`(1, -3, 4.5)` is an example of a 3 element tuple.
+
+For more information on primitive types, check out this [website](https://doc.rust-lang.org/book/primitive-types.html)
 
 
 ---
