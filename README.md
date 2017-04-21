@@ -4,9 +4,7 @@
 programming language, also referred to as rustlang.
 
 
-<p align="center">
-  <img src="ferris.jpg" alt="ferris" style="max-width:500px;"/>
-</p>
+<p align="center"><img src="ferris.jpg" alt="ferris" width="500"/></p>
 
 [credit](https://twitter.com/qedunham/status/774293932263870464)
 
