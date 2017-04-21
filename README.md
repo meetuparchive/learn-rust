@@ -20,6 +20,7 @@ Additions are welcome!
 
 * [The Rust Book](https://doc.rust-lang.org/book/) for a firm understand of the design goals and designs made to meet those goals in the language.
 * [Rust By Example](http://rustbyexample.com/) a handle of practical examples to demonstrate common needs
+* [FAQ](https://www.rust-lang.org/en-US/faq.html)
 
 ### resources to follow
 
@@ -32,7 +33,7 @@ Additions are welcome!
 
 * [/r/rust](https://www.reddit.com/r/rust)
 * [stackoverflow](http://stackoverflow.com/questions/tagged/rust)
-* [Rust nyc](https://www.meetup.com/rust-nyc/) IRL rustacians, right in your backyard
+* [Rust nyc](https://www.meetup.com/rust-nyc/) IRL rustaceans, right in your back yard!
 
 ### conferences
 
@@ -50,7 +51,16 @@ Additions are welcome!
 
 * [cargo/crates.io](https://crates.io/) cargo is a build tool for rust, it is also a tool used for publishing "crates" to a central repository to facilitate and ecosystem of sharing. As of this time there's about a 1 in 8,943 chance of finding a crate to suit your needs
 * [Rust Playpen](https://play.rust-lang.org/) play with Rust, without leaving your browser
+* [error docs](https://doc.rust-lang.org/error-index.html) Rust's has investigated a lot of effort into providing a useful error reporting experience. In addition to compiler output you can also consult this document which serves as an index to all compile time errors, and explanation of how to correct your programs
 
 ## what's with the crab?
 
 * That's [ferris](http://www.rustacean.net/), Rust's unofficial mascot
+* [rustacean](https://www.google.com/search?q=rustacean)?!? That's another name of a rust enthusiast, Similar to pythonista in python, ect
+
+## what to look forward to
+
+Rust's release cycle includes releases ever 6 weeks. The project also outlines an
+annual roadmap that provides insight on the projects goals for the year.
+
+* [rust roadmap](https://blog.rust-lang.org/2017/02/06/roadmap.html)
