@@ -3,7 +3,13 @@
 > A gentle introduction to the [Rust](https://www.rust-lang.org)
 programming language, also referred to as rustlang.
 
-## resources
+
+<p align="center">
+  <img src="ferris.jpg" alt="ferris" style="width: 200px;"/>
+</p>
+[credit](https://twitter.com/qedunham/status/774293932263870464)
+
+## learning resources
 
 While this repository serves as an introduction to the language,
 Rust has attracted a very friendly and open community that are
@@ -38,7 +44,13 @@ Additions are welcome!
 
 * [youtube](https://www.youtube.com/playlist?list=PLE7tQUdRKcybLShxegjn0xyTTDJeYwEkI)
 * [the end of unsafety](https://brson.github.io/the-end-of-unsafety/)
+* [Speaker Deck](https://speakerdeck.com/search?utf8=%E2%9C%93&q=rust) bunch of things
 
-### what's with the crab?
+## tools
+
+* [cargo/crates.io](https://crates.io/) cargo is a build tool for rust, it is also a tool used for publishing "crates" to a central repository to facilitate and ecosystem of sharing. As of this time there's about a 1 in 8,943 chance of finding a crate to suit your needs
+* [Rust Playpen](https://play.rust-lang.org/) play with Rust, without leaving your browser
+
+## what's with the crab?
 
 * That's [ferris](http://www.rustacean.net/), Rust's unofficial mascot
