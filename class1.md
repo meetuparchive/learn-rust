@@ -68,7 +68,7 @@ If you have rustup installed around you can update your local rust version with
 $ rustup update stable
 ```
 
-There are number of other commands to preform various tasks you can learn about by visiting [rustup's documentation](curl https://sh.rustup.rs -sSf | sh)
+There are number of other commands to preform various tasks you can learn about by visiting [rustup's documentation](https://github.com/rust-lang-nursery/rustup.rs#rustup-the-rust-toolchain-installerh)
 
 ---
 
