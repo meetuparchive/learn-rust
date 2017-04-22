@@ -56,7 +56,7 @@ machine code are made within that pipeline.
 
 * Rust has learned from past mistakes in other languages and makes strong attempts to avoid them. There is no `null` value instead you have Option semantics. There is no real notion of exceptions, instead you have error semantics. Errors are just values. They can't be "thrown" around like a bull in a china shop. They can only be returned, just like any other value.
 
-* Static type inferrence.
+* Static type inference. It makes leveraging the usefulness of static typing practical.
 
 ---
 
@@ -197,8 +197,8 @@ Let's use this application as our scratch pad.
 
 Rust language can be divided into two categories of abstractions: data and behavior.
 In languages will often mix the two together. Mixing data and behavior is often a
-recipe for for awkward and poorly representative design. It can also be very powerful,
-when used correctly but such correctness can not be determined by the compiler itself.
+recipe for for awkward and poorly representative design: "a penguin is a bird that can not fly".
+It can also be very powerful, when used correctly, but such correctness can not be determined nor enforced by the compiler itself.
 Rust takes a proactive approach. In Rust, data and behavior are never mixed by design,
 they are composed.
 
