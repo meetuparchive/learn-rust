@@ -72,6 +72,8 @@ machine code are made within that pipeline.
 
 * Fast growing ecosystem
 
+* Rusts compiler will keep you programs clean. Warns on unused variables and unused imports. Warns on unnecessary mutability. Can be made to warn ( and even fail to compile ) on undocumented public interfaces. And many other things...
+
 ---
 
 ### Summing that up the why
@@ -249,7 +251,7 @@ an explicit type.
 let age: i16 = 32;
 ```
 
-##### Numerics
+##### numerics
 
 * `i8`, `i16`, `i32`, `i64`, `isize` signed types ( includes negative numbers )
 * `u8`, `u16`, `u32`, `u64`, `usize` unsigned types ( no negative numbers )
@@ -260,6 +262,73 @@ and has a dependency on knowing the size of types at compile time in order to pr
 safety guarantees for you. Each of these types is appropriately sized and its up
 to the engineer to chose the size that makes sense for your application.
 
+#### booleans
+
+Booleans value what you may expect. Their type is referred to as `bool` with
+the possible values `true` or `false`
+
+```rust
+let sunny = true;
+let cloudy: bool = false;
+```
+
+Learn more about booleans [here](https://doc.rust-lang.org/std/primitive.bool.html)
+
+#### characters
+
+Characters represent a single scalar unicode value surrounded by a single quote.
+Their type is referred to as `char`.
+
+```rust
+let x = 'x';
+let two_hearts: char = '💕';
+```
+
+Learn more about characters [here](https://doc.rust-lang.org/std/primitive.char.html)
+
+#### arrays
+
+Arrays represent a fixed size collection of things that have the same type.
+
+
+```rust
+let seats = [1, 2, 3];
+```
+
+There's an emphasize on _fixed size_ here. The size is explicitly part of its type.
+
+```rust
+let seats: [i32; 3] = [1, 2, 3];
+```
+
+This happen's to be very useful in practice. The following cause Rust's compiler to
+ yield the following warning
+
+```rust
+let seats: [i32; 3] = [1, 2, 3];
+// this table only seats 3
+seats[4]; /// warning: this expression will panic at run-time
+```
+
+Because the size of the array is part of its type the following would not compiler
+
+```rust
+///  expected an array with a fixed size of 2 elements, found one with 3 elements
+let bicycle_wheels: [i32; 2] = [1, 2, 3];
+```
+
+#### Slice
+
+A slice is closely related to an array and a reference. It's very much just a
+reference to a view into a "slice" of an array.
+
+```rust
+let pizza = [1, 2, 3, 4];
+let half_pizza = &pizza[0..pizza.len()/2]; /// [1,2]
+```
+
+Learn more about slices [here](https://doc.rust-lang.org/std/primitive.slice.html)
+
 #### Tuples
 
 Tuples are a container of values where the elements of the inside the may vary in
@@ -267,6 +336,41 @@ specific types.
 
 `(1, -3, 4.5)` is an example of a 3 element tuple.
 
+#### Strings
+
+Strings are an interesting but sometimes confusing stumbling block for those new
+to Rust.
+
+A string is a sequence of valid utf-8 characters but they come in a few different
+flavors each with different use cases.
+
+#### str
+
+A str is an unsized type but is most often a reference (`&`) to a string of bytes.
+
+```rust
+let name = "emma";
+```
+
+> note: The formal type of the above is really a `&'static str`. This may be the first
+time you are seeing the lifetime type attribute ( a `'` character followed by a name);
+`'static` is a special lifetime. It is typically declared at the entry point of your
+application. Local lifetimes, references declared in functions have shorter lifespans
+and can be given shorter names. Lifetime parameterizaion is ever present with references
+but is often invisible to user code because of [lifetime elision](https://doc.rust-lang.org/nomicon/lifetime-elision.html)
+in which the compiler fills in the lifetime encodings for you
+
+Learn more about `str` type [here](https://doc.rust-lang.org/std/primitive.str.html)
+
+#### functions
+
+Functions are first class values in Rust, as such they also have types.
+
+```rust
+fn foo(x: i32) -> i32 { x }
+
+let x: fn(i32) -> i32 = foo;
+```
 
 For more information on primitive types, check out this [website](https://doc.rust-lang.org/book/primitive-types.html)
 
