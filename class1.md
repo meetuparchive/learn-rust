@@ -169,7 +169,7 @@ For now, just note that this is all you need to for the minimal rust application
 
 While you could compile simple programs with rustc and run them, you will afford
 yourself a greater velocity in future development using a higher level workflow.
-Cargo is the tool that will provide that workflow
+Cargo is the tool that will provide that workflow.
 
 `cargo` is Rust's official build tool. Cargo also makes it easy
 to bootstrap applications.
@@ -441,7 +441,7 @@ Rust provides the following Optimizations
 
 #### Structs
 
-A struct is just a named collection of fields which may be primitives additional embedded structs
+A struct is just a collection of named fields which may be primitives or an additional nesting of embedded structs
 
 ```rust
 struct Person {
@@ -469,7 +469,7 @@ As less common type of struct is called a "new type" struct. A new type struct
 struct Person(String, u32);
 ```
 
-New type structs are like a combination between structs and tuples. Like tuples,
+New type structs sit somewhere in between structs and tuples. Like tuples,
 these struct fields are referenced by index, they don't have names. Like vanilla structs,
 they have named types.
 
