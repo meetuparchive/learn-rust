@@ -1,33 +1,38 @@
-# Rust 101:
+# Rust 101
 
 ## The `struct`ure and `impl`ementation of Rust computer programs
 
 ---
 
-## agenda
+## Agenda
 
 * What is Rust?
+  * Define: Rust
 * Why learn Rust?
+  * What makes Rust interesting
 * How do I install Rust?
+  * Getting familiar with Rust's toolchain
 * What does Rust look like?
+  * How to read Rust code
 * Where do I go from here?
+  * Beyond the basics
 
 ---
 
 ## What is Rust?
 
-Rust is a modern, statically typed high level system's programming language.
+Rust is a modern, statically typed, high level system's programming language.
 
-It has the following goals
+As a project, it has the following goals
 
-* memory safety
-  *  all memory is accounted for and managed safely. (no dangling pointers, no segfaults, no unexpected crashes)
-* concurrency
+* Memory safety
+  *  all memory is accounted for and managed safely at compile time (no dangling pointers, no segfaults, no unexpected crashes)
+* First class concurrency
   *  concurrent programming, [sans the fear of shooting yourself in the foot](https://blog.rust-lang.org/2015/04/10/Fearless-Concurrency.html). The compiler catches data races and a number of other concurrency related problems at compile time rather than forcing you to try your luck and reproducing them at runtime
-* [zero cost abstractions](https://blog.rust-lang.org/2015/05/11/traits.html)
-  * as much as possible the abstractions provided come at no expense to your runtime
-* efficiency
-  * faster is better. small/no runtime. no garbage collection
+* [Zero cost abstractions](https://blog.rust-lang.org/2015/05/11/traits.html)
+  * as much as possible the high level abstractions provided come at no expense to your runtime
+* Efficiency
+  * faster is better. minimal/no runtime. no garbage collection
 
 The combination of these things provides a language that suitable for both problems that require low level
 efficiency as well as solutions that prefer high level abstractions.
@@ -36,29 +41,25 @@ efficiency as well as solutions that prefer high level abstractions.
 
 ## Why learn Rust?
 
-Rust more than a new language. It takes new approaches to long standing and hard problems.
-These solutions make notable trade offs but also provide notable gains.
+Rust more than a just new programming language. It takes new approaches to solve long standing
+and hard problems. These solutions make notable trade offs but also provide notable gains.
 
-* Memory safety and efficiency is are achieved by an alternative approach memory management.
+* Memory safety and efficiency are achieved by an alternative approach memory management.
  There is no runtime managing a garbage collection. Instead you have "Borrow" semantics.
 
-* Borrow semantics is a system that tracks the lifetime and ownership of objects through type parameterization.
-Because ownership is included in a type information. Rust's compiler is able to predictably know when to
-deallocate memory when the owner goes out of scope.
+* Borrow semantics is a system that tracks the lifetime and ownership of objects through type parameterization. Because ownership is included in type information. Rust's compiler is able to predictably know when to deallocate memory when the owner goes out of scope. This has two benefits: it removes the need for any manual memory management on behavior of the programmer and it removes any need for a garbage collector. While advances in garbage collections have advanced over the years, their use was targeted on one way of solving a problem. Rust takes a new perspective that removes the need for garbage collection entirely.
 
-* Because this information is available at compile time, the compiler is able to detect and prevent,
- potentially dangerous access to mutable references across multiple concurrent threads. This prevents an entire class
- of defects that may lie dormant but ever present within existing software written in other languages tackling concurrent
- problems.
+* Because object lifetime information is available at compile time, the compiler is able to detect and prevent, potentially dangerous access to mutable references across multiple concurrent threads. This prevents an entire class of defects that may lie dormant but ever present within existing software written in other languages tackling concurrent problems.
 
-* Rust's compilation backend leverages the work of [LLVM](http://llvm.org/). Optimizations for producing cost effective and efficient
-machine code are made within that pipeline.
+* Rust's compilation backend leverages the work of [LLVM](http://llvm.org/). Optimizations for producing cost effective and efficient machine code are made within that pipeline.
 
-* Unlike the JVM, Rust defaults to stack allocation for memory storage, rather than the heap. The notable difference is that the stack provides fast and cheap access to memory. The heap provides potentially segmented and slower access to memory.
+* Unlike the JVM, Rust defaults to stack allocation for memory storage, rather than the heap. The notable difference is that the stack provides fast and cheap access to memory. The heap provides potentially segmented and slower access to memory. For more information on stack vs heap allocation visit [here](https://doc.rust-lang.org/book/the-stack-and-the-heap.html)
 
-* Rust has learned from past mistakes in other languages and makes strong attempts to avoid them. There is no `null` value instead you have Option semantics. There is no real notion of exceptions, instead you have error semantics. Errors are just values. They can't be "thrown" around like a bull in a china shop. They can only be returned, just like any other value.
+* Rust has learned from past mistakes in other languages and makes strong attempts to avoid them. There is no `null` value. Instead you have Option semantics. There is no real notion of exceptions. Instead you have error semantics. Errors are just values. They are not special and can't be "thrown" around like a bull in a china shop. They can only be returned, just like any other value.
 
 * Static type inference. It makes leveraging the usefulness of static typing practical.
+
+* Compile time, type level derivation. This sounds like witchcraft, but I assure it it is not.
 
 ---
 
@@ -72,9 +73,9 @@ machine code are made within that pipeline.
 
 * Rust has been the most loved programming language for [two](https://twitter.com/rustlang/status/707952865067794432) [years](https://twitter.com/rustlang/status/707952865067794432) in a row according to an annual stack overflow developer survey
 
-* Fast growing ecosystem
+* Fast growing [ecosystem](https://crates.io/).
 
-* Rusts compiler will keep you programs clean. Warns on unused variables and unused imports. Warns on unnecessary mutability. Can be made to warn ( and even fail to compile ) on undocumented public interfaces. And many other things...
+* Rust's compiler will keep your programs clean. Warns on unused variables and unused imports. Warns on unnecessary mutability. Can be made to warn ( and even fail to compile ) on undocumented public interfaces. And many other things...
 
 ---
 
@@ -82,13 +83,13 @@ machine code are made within that pipeline.
 
 * Rust provides new solutions and potentially more useful solutions to old and hard problems
 
-* Rust promotes a safe and predicable concurrency model
+* Rust promotes a safe and predicable concurrency model which frees up programmers minds to focus less on hard to reproduce defects that make their way into production and more on providing value
 
-* Rust is designed for program correctness, making [impossible states impossible](https://www.youtube.com/watch?v=IcgmSRJHu_8)
+* Rust is designed for program correctness, making [impossible states impossible](https://www.youtube.com/watch?v=IcgmSRJHu_8) freeing up programmers from maintaining error prone code so they can focus on providing value
 
-* Rust is does not compromise on efficiency.
+* Rust is does not [compromise on efficiency](https://blog.rust-lang.org/2015/05/11/traits.html). It's a goal to provide high level abstractions are just as efficient as if you optimize them by hand.
 
-* Because rust takes a new approach to existing problems, amazing new things are possible.
+* Because Rust takes a new approach to existing problems, amazing new things are possible.
 
 ---
 
@@ -96,7 +97,7 @@ machine code are made within that pipeline.
 
 Visit [this website](https://www.rust-lang.org/en-US/install.html)
 
-Rust utilizes a tool called [rustup](https://www.rustup.rs/) for managing toolchain
+Rust utilizes a tool called [rustup](https://www.rustup.rs/) for managing it's toolchain
 installations
 
 ```bash
@@ -119,11 +120,19 @@ There are number of other commands to preform various tasks you can learn about 
 
 Another one of Rust's goals is stability without stagnation.
 
-Rust will always provide at least two latest versions for use: `stable` and `nightly`
+Rust will always provide at least two latest versions for use: `stable` and `nightly`. The have different target audiences
 
-`nightly` is provided for testing features that may be included in the next release. It is not considered to be bug free. If you are a library author, you may prefer this to stay ahead of your customers.
+`nightly` is provided for testing features that may be included in the next release. It is not considered to be bug free and its interfaces may be subject to change. If you are a library author, you may prefer this to stay ahead of your customers upgrading to the next version of Rust.
 
-`stable` is considered to be bug free and production ready. If you are writing applications, you'll want to use this
+`stable` is considered to be bug free and production ready. If you are writing applications, you'll want to prefer this.
+
+---
+
+### IDE support
+
+If you use an IDE, you're IDE most likely already has integration for Rust via it's package manager or plugin system
+
+Visit [this website](https://areweideyet.com/) to get a sense of the current state of IDE support
 
 ---
 
@@ -137,13 +146,13 @@ unfamiliar. I'll cover those in just a bit.
 
 ---
 
-### applications
+### Applications
 
-All rust code is run as an executable binary application. These application are
+All Rust code is run as an executable binary application. These application are
 compiled down programs specialized to run on your native operating system.
-Rust calls these "targets".
+Rust calls these compilation "targets".
 
-An application is just a program with a `main` function.
+An application is just a is noting more with a `main` function.
 
 ```rust
 fn main() {
@@ -158,7 +167,7 @@ For now, just note that this is all you need to for the minimal rust application
 
 ### bootstrapping and running applications
 
-Remember `cargo`? `cargo` is Rust's official build tool. Cargo also makes it easy
+`cargo` is Rust's official build tool. Cargo also makes it easy
 to bootstrap applications.
 
 ```bash
@@ -192,16 +201,20 @@ Hello, world!
 If you look at the contents of `src/main.rs` you'll find a pre-generated
 application ( with a `main` function )
 
+Feel free to use this application as a scratch pad. For exploring rust.
+
+You may also find [Rust playpen](https://play.rust-lang.org/) useful for exploration.
+Rust playpen also has some other interesting features, like seeing the assembly
+code that Rust's compiler generates. This is sometime helpful in understanding the differences
+between code compiled in debug mode ( the default ) and release mode ( a further optimized format ).
 
 ---
 
-### the very basics
-
-Let's use this application as our scratch pad.
+### The very basics
 
 Rust language can be divided into two categories of abstractions: data and behavior.
-In languages will often mix the two together. Mixing data and behavior is often a
-recipe for for awkward and poorly representative design: "a penguin is a bird that can not fly".
+
+In other languages you will often find the two intertwined in ways that cannot be separated. Mixing data and behavior is often a recipe for for awkward and poorly representative design: "a penguin is a bird that can not fly".
 It can also be very powerful, when used correctly, but such correctness can not be determined nor enforced by the compiler itself.
 Rust takes a proactive approach. In Rust, data and behavior are never mixed by design,
 they are composed.
@@ -210,7 +223,7 @@ Let's focus on data first.
 
 ---
 
-### data
+### Data
 
 Rust supports a number of primitive types. Depending on where you're coming from,
 these may be greater in number than you may be used to.
@@ -402,7 +415,7 @@ be appended to (`push`, `push_str` )
 
 ---
 
-#### functions
+#### Functions
 
 Functions are first class values in Rust, as such they also have types.
 
