@@ -53,7 +53,7 @@ and hard problems. These solutions make notable trade offs but also provide nota
 
 * Rust's compilation backend leverages the work of [LLVM](http://llvm.org/). Optimizations for producing cost effective and efficient machine code are made within that pipeline.
 
-* Unlike the JVM, Rust defaults to stack allocation for memory storage, rather than the heap. The notable difference is that the stack provides fast and cheap access to memory. The heap provides potentially segmented and slower access to memory. For more information on stack vs heap allocation visit [here](https://doc.rust-lang.org/book/the-stack-and-the-heap.html)
+* Unlike the JVM, Rust defaults to stack allocation for memory storage, rather than the heap. The notable difference is that the stack provides fast and cheap access to memory. The heap provides potentially segmented and slower access to memory. Learn more about stack vs heap allocation visit [here](https://doc.rust-lang.org/book/the-stack-and-the-heap.html)
 
 * Rust has learned from past mistakes in other languages and makes strong attempts to avoid them. There is no `null` value. Instead you have Option semantics. There is no real notion of exceptions. Instead you have error semantics. Errors are just values. They are not special and can't be "thrown" around like a bull in a china shop. They can only be returned, just like any other value.
 
@@ -259,7 +259,7 @@ let age = 32;
 
 `let` will be the most common way you name values embedded with in your program.
 `static` and `const` are used to name values that have a wider scope and can be
-accessed from multiple parts of your program. In most cases you'll want to prefer `const`, a global value that can not change. These values bindings have some additional requirements in that they can only be assigned to values which themselves are constant.
+accessed from multiple parts of your program. In most cases you'll want to prefer `const`, a global value that can not change. These values bindings have some additional requirements in that they can only be assigned to values which themselves are constant. Learn more about static and const [here](https://doc.rust-lang.org/book/const-and-static.html)
 
 Note that Rust is statically typed. Since values have types, Rust can often infer
 their static type without explicit annotation, given other type information in the surrounding environment. Rust will use all available type
@@ -709,4 +709,161 @@ impl Read for Person {
 }
 ```
 
+This is essentially how you achieve behavior through composition in Rust.
+You have well defined data types and well defined behavioral traits.
+You create implementations of those traits in independent of the definition of the data
+and the interface. This is the primary means of how Rust enforces their separation.
+
+Learn more about traits [here](https://doc.rust-lang.org/book/traits.html)
+
+---
+
+### Keeping things coherent
+
+In order to design stable systems Rust employs a set of coherence when it comes to
+implementing traits. These rules prevent the existence of multiple implementations
+of a Trait for a given type. Getting into the details and implication is a more advanced topic but
+be aware that there can only be one impl of a trait for a given type.
+
+---
+
+### About scopes
+
+I mentioned about that in order to use trait implementations in code, evidence must be in scope.
+Let's learn about scopes.
+
+Rust code is organized into modules called 'mods'. Modules create scopes
+for definitions and may have arbitrary nesting. On disk these these typically translate to file names
+
+Rust libraries have an implied module that exists within a `lib.rs` file and for applications one that exists
+within the `main.rs` file
+
+```bash
+$ tree app
+  |_ lib.rs
+  |_ foo.rs
+  |_ bar.rs
+  |_ main.rs
+```
+
+Here it's safe to say this project defines two modules `foo` and `bar`. It's up to the lib.rs to expose those members to the public using the `pub` keyword.
+
+```rust
+// lib.rs
+
+// these make the foo and bar mod(ules) accessible to main.rs
+pub mod foo;
+pub mod bar;
+```
+
+It may also be the case that you want to hide your package structure but publish
+a subset of types within those modules. This pattern is called [re-exporting](https://doc.rust-lang.org/book/crates-and-modules.html#re-exporting-with-pub-use)
+
+```rust
+// lib.rs
+mod foo;
+mod bar:
+pub use foo::FooType;
+pub use bar::BarType;
+```
+
+This also simplifies the surface area of your library users interact with and need to know
+about so its a good pattern to keep in mind.
+
+The highest unit of compilation is called a crate. A crate is just a collection of modules intended for
+use in integrating with other modules. This is the foundation of Rust's library ecosystem.
+
+> note: According to rust's coherence rules you can not implement a Trait defined in a separate crate from a type also defined in an external crate. The thought behind this is that that crate may eventually provide that implementation and then you'll have two implementations in the same program! You can however define your own Trait and provide implementations for external types and you can use
+define implementations of external Traits for your own types.
+
+To bring an implementation into scope you import the Trait into your current crate using the `use` keyword.
+
+Often time's you'll find types that impl standard library traits like [Read](https://doc.rust-lang.org/std/io/trait.Read.html) and [Write](https://doc.rust-lang.org/std/io/trait.Write.html). In order use those implementations, you will need to bring those Traits into scope since these traits are not in scope by default.
+
+```rust
+use std:io::{Read, Write};
+```
+
+Learn more about organizing modules [here](https://doc.rust-lang.org/book/crates-and-modules.html)
+
+
+---
+
+### control flow
+
+Rust borrows much from the C family of language in terms of control flow plus a few additional features.
+
+One notable differences is that Rust is expression oriented. To return a value from a control flow structure
+you do no need an explicit `return` keyword, you just yield the value.
+
+---
+
+#### if/else
+
+```rust
+let result = if 1 > 2 { "math works" } else { "math is broken!" };
+```
+
+If can also be useful if exemplifying an interesting feature of `let` keyword. The `let` keyword
+can take a structural pattern. Mixed with `if` this pattern is commonly known as an `if let` for lack of a better term
+
+```rust
+if let Some(value) = optional_value {
+  // do something with value
+}
+```
+
+---
+
+### speaking of patterns
+
+Rust supports a more general form of if/else that allows you to branch over conditions based on the shape of
+data. This is known more formally as "pattern matching". This comes in particularly handy with enum types, but is use extends beyond enums.
+
+As mentioned earlier on of the interesting aspects about enums is that their variants are finite in number. Because Rust knows this at compile time Rust is able to prevent you from a certain class of errors Where
+you are not handling a case where you should. A common case is handling errors with the [Result enum](https://doc.rust-lang.org/std/result/enum.Result.html), a topic we will cover in a follow up class.
+
+```rust
+let final_result = result match {
+  Ok(value) => value + 1
+}
+```
+
+What behavior with your program exhibit is result was the Err variant of result. The answer is undefined
+behavior and undefined behavior at runtime is a _bad_ thing. Rust is able to prevent you from permitting
+undefined behavior by telling you that your pattern match is not "exhaustive".
+
+You can correct this compiler error in a few different ways
+
+Option 1
+
+```rust
+let final_result = result match {
+  Ok(value) => value + 1,
+  Err(_) => default_value
+}
+```
+
+Option 2
+
+```rust
+let final_result = result match {
+  Ok(value) => value + 1,
+  _ => default_value
+}
+```
+
+Both options are technically correct and are valid and both are using different kinds of patterns.
+An `_` in a patterns means that you are matching a certain pattern but that you are not introducing a new name to bind the pattern's value to.
+
+In the first option we are matching on the `Err` variant of `Result` but we are omitting a binding to the type that `Err` is wrapping. In this case we are unpacking the structure of the enum. You can also do this with other types like structs.
+
+The the second option we are stating that we are matching any other possible pattern and are not binding that to a name. In this case there is no destructural matching. We are simply handling any additional cases with a fall through option.
+
+Depending on your use case one may sometimes be preferred over the other.
+
+Learn more about pattern matching [here](https://doc.rust-lang.org/book/patterns.html)
+
 # Where do I go from here?
+
+In future classes we'll cover more packages in in the std library which you'll likely be interacting with as well as finding and consuming third party crates
