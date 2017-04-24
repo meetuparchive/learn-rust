@@ -517,35 +517,37 @@ enum Animal {
 }
 ```
 
-Since the number of variants are fixed, rust is able to do exhaustiveness checks
-when pattern matching over their values. We'll take about this later.
+Since the number of variants are fixed, Rust is able to do exhaustiveness checks
+at compile time when pattern matching over their values. We'll take about pattern matching
+in just a bit.
 
 ---
 
 ### Behavior
 
-So how do we do anything interesting with data in Rust? The answer is `Traits`. Rust's
-behavioral surface area is decorated in a number of traits which define the capability of a type
-. Capability is defined as an implementation of that behavior for given type. This implementations are referred to as 'impls`
+So how do we make data do anything interesting in Rust? The answer is `Traits`. Rust's
+behavioral surface area is decorated in a number of traits which define the capability of types
+. Capability is defined as an implementation of that behavior `Trait` for given type. These implementations are formally referred to as 'impls`
 To use these implementations in code evidence must be in scope.
 
-Traits are everywhere in Rust. If you write a hello world program in Rust, you've interacted with traits
-without knowing it.
+Traits are everywhere in Rust. If you write a hello world program in Rust, you've already interacted with traits, perhaps without knowing it.
 
 ```rust
 println!("hello {}", "world");
 ```
 
 So what's going on here? `println!` is a rust macro that takes a str slice literal that contains a pattern and a variable set of arguments.
-Rust doesn't have variable arguments but macros can enable that anyway. More importantly is the structure of the pattern str.
+Rust doesn't have variable arguments but macros, a more advanced topic, can enable that anyway.
 
-`{}` is a pattern that indicates, the value to substitute _must_ implement the [Display](https://doc.rust-lang.org/std/fmt/trait.Display.html) trait.
+More importantly here is the structure of the pattern str. `println` supports a number of different directives which determine how a piece of data is rendered.
+
+`{}` is a pattern that indicates that the value to substitute _must_ implement the [Display](https://doc.rust-lang.org/std/fmt/trait.Display.html) trait.
 It just so happens that the str slice primitive type has already implemented that.
 
-`{:?}` is a pattern that indicates, the value to substitute _must_ implement the [Debug](https://doc.rust-lang.org/std/fmt/trait.Debug.html) trait.
+`{:?}` is a pattern that indicates that the value to substitute _must_ implement the [Debug](https://doc.rust-lang.org/std/fmt/trait.Debug.html) trait.
 It just so happens that the str slice primitive type has already implemented that as well.
 
-But what about your own types? If you make an attempt to do so your program will likely not compile.
+But what about your own types? If you make an attempt to replace the str slice with your own times your program will likely not compile, and the compile will tell you exactly why.
 
 ```rust
 /// the trait `std::fmt::Display` is not implemented for `Person`
@@ -563,7 +565,7 @@ Some builtin Traits like `Debug`, `Clone`, `Copy`, and others can often be gener
 called "type derivation". That is to say, if Rust is able to derive an impl for all of the embedded types within your type,
 Rust will be able to implement a trait for you. There is a specific syntax for that called a type [attribute](https://doc.rust-lang.org/book/attributes.html)
 
-To derive an implementation of the Debug trait for the person type add the following.
+To derive an implementation of the `Debug` trait for the `Person` type add the following.
 
 ```rust
 #[derive(Debug)]
@@ -574,7 +576,7 @@ struct Person {
 println!("hello {:?}", Person { name: "emma".into(), age: 32});
 ```
 
-Type level derivation is an extremely useful to in reducing the amount of boiler plate that you'd have to write out by hand otherwise.
+Type level derivation is an extremely useful tool in reducing the amount of boiler plate that you'd have to write out by hand otherwise. It's there to use to your advantage so use it often where appropriate.
 
 ---
 
@@ -599,16 +601,35 @@ impl YourBehavior for YourType {
 }
 ```
 
-It it said that the interface is "inherent" to the type, hence the name
+It it said that the interface is "inherent" to the type, hence the name.
+
+A common use of an inherent trait is to define factory and helper methods for your type.
+A common pattern is to define a `new` method that hides the implementation of how a struct
+is constructed. Don't confuse this with the `new` keyword in other languages. The name `new`
+is mearly just a common convention.
+
+```rust
+impl Person {
+  fn new(
+    name: String,
+    age: f32
+  ) -> Person {
+    Person {
+      name: name,
+      age: age
+    }
+  }
+}
+```
 
 
 ---
 
 ### Traits
 
-A trait is a behavior interface that may provide both abstract, undefined methods, default method implementations as well as associated types
+A trait is a behavioral interface that may provide both abstract unimplemented methods, default method implementations as well as associated types
 
-There are a handful of decisions you'll want to consider when designing this interface so let's go through them one by one.
+There are a handful of decisions you'll want to consider when designing these interfaces so let's go through them one by one.
 
 A basic trait will look like this
 
@@ -618,7 +639,7 @@ trait Read {
 }
 ```
 
-> note: In Rust mutability and references are part of a types identity. By Defalut data created is owned and immutable. These properties play into
+> note: In Rust mutability and references are part of a types identity. By Default data created is owned and immutable. These properties play into
 the reference types trait methods are defined for. For instance if a trait method is defined for a reference to a mutable
 instance of this type, it will be a compile error to call this method an and owned immutable reference.
 
@@ -626,6 +647,9 @@ You declare a method for a type of reference to a type ( owned / borrowed / muta
 
 ```rust
 trait Read {
+    // this method is defined for references of self
+    // that means calling this method will not take ownership
+    // over self
     fn read(&self, book: &Book) -> ();
 }
 ```
@@ -636,31 +660,51 @@ If you were to implement this method for Person
 impl Read for Person {
   fn read(&self, book: &Book) -> () {
     // all data associated with a person is accessible via self
+    // implementation goes here
   }
 }
 ```
 
-Armed with an impl, Person can now read.
+Armed with an `impl`, your `Person` can now read.
 
 ```rust
 emma.read(&book);
 ```
 
 You will sometimes need restrict implementations to types that also implement some other behavior.
+This provides you certain guarantees when your default implementation needs to know more about the abstract
+type which will fill in the rest of implementation.
 
 ```rust
-trait Read : Remember { // Read can now only be implemented by types that now how to remember
+trait Read : Remember { // Read can now only be implemented by types that know how to remember
   // ...
 }
 ```
 
 This may appear like subclassing in other languages, but try to avoid drawing these kinds of analogies. This
-is a much more powerful utility. It's a declarative form of type requirements.
+is a much more powerful utility. It's a declarative form of specifying type requirements through composition.
 
 You are not restricted to making one requirement. You can make as many as you like
 
 ```rust
 trait Read: Remember + Comprehend + Appreciate { // Read can only be implemented for types that will remember, comprehend, and appreciate it!
+  // ...
+}
+
+impl Remember for Person {
+  // ...
+}
+
+impl Comprehend for Person {
+  // ...
+}
+
+impl Appreciate for Person {
+  // ...
+}
+
+// you can now teach a person how to read
+impl Read for Person {
   // ...
 }
 ```
