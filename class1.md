@@ -866,4 +866,6 @@ Learn more about pattern matching [here](https://doc.rust-lang.org/book/patterns
 
 # Where do I go from here?
 
-In future classes we'll cover more packages in in the std library which you'll likely be interacting with as well as finding and consuming third party crates
+In future classes we'll cover more packages in in the std library which you'll likely be interacting with as well as finding and consuming third party crates.
+
+To get head start you may want to get up to speed check out the official online [Rust Book](https://doc.rust-lang.org/book/) which covers most of the material we'll be covering here but in a bit more depth.
