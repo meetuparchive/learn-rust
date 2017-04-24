@@ -864,6 +864,52 @@ Depending on your use case one may sometimes be preferred over the other.
 
 Learn more about pattern matching [here](https://doc.rust-lang.org/book/patterns.html)
 
+---
+
+### getting loopy
+
+It's very common task to iterate over a collection of things, often called "looping".
+
+Rust has a few control structures defined for these needs.
+
+#### for/in
+
+Rust defines an abstract for/in constrol structure which is essentially syntactive sugar
+for driving iteration over another rust trait called [Iterators](https://doc.rust-lang.org/std/iter/trait.Iterator.html)
+
+> note: rust iterators provide a number of different combinatorial methods but the
+that's most useful to note is `next` which returns an Option type containing either Some of the next value
+or None indicating that the Iterator has been exhausted. There are a number of types
+which implement the Iterator trait and work ask expected with for/in but those will be covered
+in a future class
+
+```rust
+for value in vec![1,3,4] {
+  println!("{}", value)
+}
+```
+
+Notably you can skip over an iteration using the `continue` keyword or break out of the iteration using the
+`break` keyword.
+
+#### loop
+
+Some times you just need a program to loop without a termination condition. Rust supports the the `loop`
+keyword to satisfy that need.
+
+The following program will loop forever printing "hello" every second.
+
+```rust
+use std::thread::sleep;
+use std::time::Duration;
+
+loop {
+  println!("hello");
+  sleep(Duration::from_secs(1));
+}
+```
+
+
 # Where do I go from here?
 
 In future classes we'll cover more packages in in the std library which you'll likely be interacting with as well as finding and consuming third party crates.
