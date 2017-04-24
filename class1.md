@@ -1,4 +1,6 @@
-# Rust 101: class one
+# Rust 101:
+
+## The `struct`ure and `impl`ementation of Rust computer programs
 
 ---
 
