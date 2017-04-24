@@ -26,7 +26,7 @@ Rust is a modern, statically typed, high level system's programming language.
 As a project, it has the following goals
 
 * Memory safety
-  *  all memory is accounted for and managed safely at compile time (no dangling pointers, no segfaults, no unexpected crashes)
+  *  all memory is accounted for and managed safely at compile time (no dangling pointers, no segfaults, no memory leaks, no unexpected crashes!)
 * First class concurrency
   *  concurrent programming, [sans the fear of shooting yourself in the foot](https://blog.rust-lang.org/2015/04/10/Fearless-Concurrency.html). The compiler catches data races and a number of other concurrency related problems at compile time rather than forcing you to try your luck and reproducing them at runtime
 * [Zero cost abstractions](https://blog.rust-lang.org/2015/05/11/traits.html)
@@ -165,7 +165,11 @@ For now, just note that this is all you need to for the minimal rust application
 
 ---
 
-### bootstrapping and running applications
+### Bootstrapping and running applications
+
+While you could compile simple programs with rustc and run them, you will afford
+yourself a greater velocity in future development using a higher level workflow.
+Cargo is the tool that will provide that workflow
 
 `cargo` is Rust's official build tool. Cargo also makes it easy
 to bootstrap applications.
@@ -255,7 +259,7 @@ let age = 32;
 
 `let` will be the most common way you name values embedded with in your program.
 `static` and `const` are used to name values that have a wider scope and can be
-accessed from multiple parts of your program. In most cases you'll want to prefer `const`, a global value that can not change.
+accessed from multiple parts of your program. In most cases you'll want to prefer `const`, a global value that can not change. These values bindings have some additional requirements in that they can only be assigned to values which themselves are constant.
 
 Note that Rust is statically typed. Since values have types, Rust can often infer
 their static type without explicit annotation, given other type information in the surrounding environment. Rust will use all available type
@@ -290,8 +294,8 @@ to the engineer to chose the size that makes sense for your application.
 
 #### Booleans
 
-Booleans value what you may expect. Their type is referred to as `bool` with
-the possible values `true` or `false`
+Booleans value are what you may expect. Their type is referred to as `bool` with
+the possible values of `true` or `false`
 
 ```rust
 let sunny = true;
@@ -325,7 +329,7 @@ Arrays represent a fixed size collection of things that have the same type.
 let seats = [1, 2, 3];
 ```
 
-There's an emphasize on _fixed size_ here. The size is explicitly part of its type.
+There's a string emphasis on _fixed size_ here. The size is explicitly part of its type.
 
 ```rust
 let seats: [i32; 3] = [1, 2, 3];
@@ -336,7 +340,7 @@ This happen's to be very useful in practice. The following cause Rust's compiler
 
 ```rust
 let seats: [i32; 3] = [1, 2, 3];
-// this table only seats 3
+// this table only seats 3!
 seats[4]; /// warning: this expression will panic at run-time
 ```
 
