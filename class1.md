@@ -255,16 +255,16 @@ let age = 32;
 
 `let` will be the most common way you name values embedded with in your program.
 `static` and `const` are used to name values that have a wider scope and can be
-accessed from multiple parts of your program.
+accessed from multiple parts of your program. In most cases you'll want to prefer `const`, a global value that can not change.
 
 Note that Rust is statically typed. Since values have types, Rust can often infer
-their static type without explicitly annotation. Rust will use all available type
+their static type without explicit annotation, given other type information in the surrounding environment. Rust will use all available type
 information in scope to order to determine an appropriate type to assign to the
 value. When there is a lack of concrete evidence, your program will fail to compile.
 In other languages the result is some times inferred to be a least common denominator
 type based on a type inheritance hierarchy. Rust doesn't not support a notion of
 inheritance hierarchy so your values will always be assigned to a non ambiguous type
-in a compiled program
+in a compiled program.
 
 To be more explicit with your types you can add a suffix to your name that includes a `:` and
 an explicit type.
