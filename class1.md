@@ -206,15 +206,20 @@ they are composed.
 
 Let's focus on data first.
 
+---
+
 ### data
 
 Rust supports a number of primitive types. Depending on where you're coming from,
 these may be greater in number than you may be used to.
 
 The type of a piece of data determines it's shape, possible values, and size. Size is particularly important in Rust.
-Types of have names but you can also alias these names to something that may be more appropriate for your application
+
+---
 
 #### Naming types
+
+Types of have names but you can also alias these names to something that may be more appropriate for your application
 
 ```rust
 type Age = i16;
@@ -222,6 +227,8 @@ type Age = i16;
 
 The `type` keyword allows for that. This is also useful when you may wish to
 simplify the name of a more complicated type.
+
+---
 
 #### Naming values
 
@@ -251,7 +258,9 @@ an explicit type.
 let age: i16 = 32;
 ```
 
-##### numerics
+---
+
+#### Numerics
 
 * `i8`, `i16`, `i32`, `i64`, `isize` signed types ( includes negative numbers )
 * `u8`, `u16`, `u32`, `u64`, `usize` unsigned types ( no negative numbers )
@@ -262,7 +271,9 @@ and has a dependency on knowing the size of types at compile time in order to pr
 safety guarantees for you. Each of these types is appropriately sized and its up
 to the engineer to chose the size that makes sense for your application.
 
-#### booleans
+---
+
+#### Booleans
 
 Booleans value what you may expect. Their type is referred to as `bool` with
 the possible values `true` or `false`
@@ -274,7 +285,9 @@ let cloudy: bool = false;
 
 Learn more about booleans [here](https://doc.rust-lang.org/std/primitive.bool.html)
 
-#### characters
+---
+
+#### Characters
 
 Characters represent a single scalar unicode value surrounded by a single quote.
 Their type is referred to as `char`.
@@ -286,7 +299,9 @@ let two_hearts: char = '💕';
 
 Learn more about characters [here](https://doc.rust-lang.org/std/primitive.char.html)
 
-#### arrays
+---
+
+#### Arrays
 
 Arrays represent a fixed size collection of things that have the same type.
 
@@ -317,6 +332,8 @@ Because the size of the array is part of its type the following would not compil
 let bicycle_wheels: [i32; 2] = [1, 2, 3];
 ```
 
+---
+
 #### Slice
 
 A slice is closely related to an array and a reference. It's very much just a
@@ -329,12 +346,16 @@ let half_pizza = &pizza[0..pizza.len()/2]; /// [1,2]
 
 Learn more about slices [here](https://doc.rust-lang.org/std/primitive.slice.html)
 
+---
+
 #### Tuples
 
 Tuples are a container of values where the elements of the inside the may vary in
 specific types.
 
 `(1, -3, 4.5)` is an example of a 3 element tuple.
+
+---
 
 #### Strings
 
@@ -356,11 +377,28 @@ let name = "emma";
 time you are seeing the lifetime type attribute ( a `'` character followed by a name);
 `'static` is a special lifetime. It is typically declared at the entry point of your
 application. Local lifetimes, references declared in functions have shorter lifespans
-and can be given shorter names. Lifetime parameterizaion is ever present with references
+and can be given shorter names. Lifetime parameterization is ever present with references
 but is often invisible to user code because of [lifetime elision](https://doc.rust-lang.org/nomicon/lifetime-elision.html)
 in which the compiler fills in the lifetime encodings for you
 
 Learn more about `str` type [here](https://doc.rust-lang.org/std/primitive.str.html)
+
+The other type of string you're likely be working with an an owned string, referred to as a `String`
+
+You can create owned `Strings` a number of different ways. Typically patterns include lifting a str slice
+into a `String`. Depending on the context one may be preferable to another.
+
+```rust
+let name = String::from("emma");
+let name2 = "emma".to_owned(); // provided by ToOwned impl
+let name3: String = "emma".into(); // provided Into impl
+let name4: String = "emma".to_string(); // provided by ToString impl
+```
+
+One notable difference from str slices is that `Strings` are growable, meaning the may
+be appended to (`push`, `push_str` )
+
+---
 
 #### functions
 
@@ -374,7 +412,238 @@ let x: fn(i32) -> i32 = foo;
 
 For more information on primitive types, check out this [website](https://doc.rust-lang.org/book/primitive-types.html)
 
+---
+
+### Beyond primitives
+
+At some point you'll find it useful to create your own data types that can more closely represent your domain.
+
+Rust provides the following Optimizations
+
+#### Structs
+
+A struct is just a named collection of fields which may be primitives additional embedded structs
+
+```rust
+struct Person {
+  name: String,
+  age: u32
+}
+```
+
+Do not confuse structs with what you may call a "class" in other languages. Rust structs consist only of data.
+Rust makes a strong separation between data and behavior. We'll talk how to associate behavior with data later.
+You can access fields by name. You can create instances of structs using the following syntax.
+
+```rust
+let emma = Person {
+  name: "emma".into(),
+  age: 32
+};
+let age = emma.age;
+```
+
+
+As less common type of struct is called a "new type" struct. A new type struct
+
+```rust
+struct Person(String, u32);
+```
+
+New type structs are like a combination between structs and tuples. Like tuples,
+these struct fields are referenced by index, they don't have names. Like vanilla structs,
+they have named types.
+
+```rust
+let emma = Person("emma".into(), 32);
+let age = emma.1;
+```
+
+The typical use case for new type structs are to hide wrap your api's internal dependencies in
+ways that prevent them from leaking through your public interfaces.
+
+One thing to note in your struct design is how lifetimes play into references within your struct.
+
+The lifetime of a borrowed type is part of its type's identity. As such you're type will need to take
+those into account, typically through type parameterization.
+
+```rust
+struct Person<'a> {
+  name: &'a str,
+  age: u32
+}
+let emma = Person {
+  name: "emma",
+  age: 32
+};
+```
 
 ---
+
+#### Enums
+
+Rust's enum types are very powerful and vary flexible. Rust's structs are "tagged unions".
+This means that their variants may differ in shape but are unified by their enum type.
+
+
+```rust
+enum Animal {
+    Cat {
+      color: String
+    },
+    Person {
+      name: String,
+      age: u32
+    }
+}
+```
+
+Since the number of variants are fixed, rust is able to do exhaustiveness checks
+when pattern matching over their values. We'll take about this later.
+
+---
+
+### Behavior
+
+So how do we do anything interesting with data in Rust? The answer is `Traits`. Rust's
+behavioral surface area is decorated in a number of traits which define the capability of a type
+. Capability is defined as an implementation of that behavior for given type. This implementations are referred to as 'impls`
+To use these implementations in code evidence must be in scope.
+
+Traits are everywhere in Rust. If you write a hello world program in Rust, you've interacted with traits
+without knowing it.
+
+```rust
+println!("hello {}", "world");
+```
+
+So what's going on here? `println!` is a rust macro that takes a str slice literal that contains a pattern and a variable set of arguments.
+Rust doesn't have variable arguments but macros can enable that anyway. More importantly is the structure of the pattern str.
+
+`{}` is a pattern that indicates, the value to substitute _must_ implement the [Display](https://doc.rust-lang.org/std/fmt/trait.Display.html) trait.
+It just so happens that the str slice primitive type has already implemented that.
+
+`{:?}` is a pattern that indicates, the value to substitute _must_ implement the [Debug](https://doc.rust-lang.org/std/fmt/trait.Debug.html) trait.
+It just so happens that the str slice primitive type has already implemented that as well.
+
+But what about your own types? If you make an attempt to do so your program will likely not compile.
+
+```rust
+/// the trait `std::fmt::Display` is not implemented for `Person`
+println!("hello {}", Person { name: "emma".into(), age: 32});
+```
+
+```rust
+/// the trait `std::fmt::Debug` is not implemented for `Person`
+println!("hello {:?}", Person { name: "emma".into(), age: 32});
+```
+
+Implementing Rust traits may seem onerous at first, but the idea behind their design is vary powerful.
+
+Some builtin Traits like `Debug`, `Clone`, `Copy`, and others can often be generated for you via a feature of Rust
+called "type derivation". That is to say, if Rust is able to derive an impl for all of the embedded types within your type,
+Rust will be able to implement a trait for you. There is a specific syntax for that called a type [attribute](https://doc.rust-lang.org/book/attributes.html)
+
+To derive an implementation of the Debug trait for the person type add the following.
+
+```rust
+#[derive(Debug)]
+struct Person {
+  name: String,
+  age: u32
+}
+println!("hello {:?}", Person { name: "emma".into(), age: 32});
+```
+
+Type level derivation is an extremely useful to in reducing the amount of boiler plate that you'd have to write out by hand otherwise.
+
+---
+
+### Inherent traits
+
+Rust defines a special kind of trait for types called an inherent trait. These differ from typical Traits in that they are defining
+behavioral interfaces for a type that are unique to that type.
+
+Inherent traits look like this
+
+```rust
+impl YourType {
+   ...
+}
+```
+
+While a typical trait impl would look like
+
+```rust
+impl YourBehavior for YourType {
+ ...
+}
+```
+
+It it said that the interface is "inherent" to the type, hence the name
+
+
+---
+
+### Traits
+
+A trait is a behavior interface that may provide both abstract, undefined methods, default method implementations as well as associated types
+
+There are a handful of decisions you'll want to consider when designing this interface so let's go through them one by one.
+
+A basic trait will look like this
+
+```rust
+trait Read {
+    /// methods...
+}
+```
+
+> note: In Rust mutability and references are part of a types identity. By Defalut data created is owned and immutable. These properties play into
+the reference types trait methods are defined for. For instance if a trait method is defined for a reference to a mutable
+instance of this type, it will be a compile error to call this method an and owned immutable reference.
+
+You declare a method for a type of reference to a type ( owned / borrowed / mutable / ect ) by declaring the first argument as `self`
+
+```rust
+trait Read {
+    fn read(&self, book: &Book) -> ();
+}
+```
+
+If you were to implement this method for Person
+
+```rust
+impl Read for Person {
+  fn read(&self, book: &Book) -> () {
+    // all data associated with a person is accessible via self
+  }
+}
+```
+
+Armed with an impl, Person can now read.
+
+```rust
+emma.read(&book);
+```
+
+You will sometimes need restrict implementations to types that also implement some other behavior.
+
+```rust
+trait Read : Remember { // Read can now only be implemented by types that now how to remember
+  // ...
+}
+```
+
+This may appear like subclassing in other languages, but try to avoid drawing these kinds of analogies. This
+is a much more powerful utility. It's a declarative form of type requirements.
+
+You are not restricted to making one requirement. You can make as many as you like
+
+```rust
+trait Read: Remember + Comprehend + Appreciate { // Read can only be implemented for types that will remember, comprehend, and appreciate it!
+  // ...
+}
+```
 
 # Where do I go from here?
