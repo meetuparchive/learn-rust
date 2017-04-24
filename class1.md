@@ -21,7 +21,7 @@
 
 ## What is Rust?
 
-Rust is a modern, statically typed, high level system's programming language.
+Rust is a modern, statically typed, high level system's programming language. That sounds like a bit of marketing but it's a pretty accurate description.
 
 As a project, it has the following goals
 
