@@ -611,7 +611,7 @@ is merely just a common convention.
 impl Person {
   fn new(
     name: String,
-    age: f32
+    age: u16
   ) -> Person {
     Person {
       name: name,
@@ -823,7 +823,7 @@ As mentioned earlier on of the interesting aspects about enums is that their var
 you are not handling a case where you should. A common case is handling errors with the [Result enum](https://doc.rust-lang.org/std/result/enum.Result.html), a topic we will cover in a follow up class.
 
 ```rust
-let final_result = result match {
+let final_result = match result {
   Ok(value) => value + 1
 }
 ```
@@ -837,7 +837,7 @@ You can correct this compiler error in a few different ways
 Option 1
 
 ```rust
-let final_result = result match {
+let final_result = match result {
   Ok(value) => value + 1,
   Err(_) => default_value
 }
@@ -846,7 +846,7 @@ let final_result = result match {
 Option 2
 
 ```rust
-let final_result = result match {
+let final_result = match result {
   Ok(value) => value + 1,
   _ => default_value
 }
