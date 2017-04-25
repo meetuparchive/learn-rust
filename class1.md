@@ -26,7 +26,7 @@ Rust is a modern, statically typed, high level system's programming language. Th
 As a project, it has the following goals
 
 * Memory safety
-  *  all memory is accounted for and managed safely at compile time (no dangling pointers, no segfaults, no memory leaks, no unexpected crashes!)
+  *  all memory is accounted for and managed safely at compile time (no dangling pointers, no segfaults, no memory leaks, no unexpected crashes do to accounting errors!)
 * First class concurrency
   *  concurrent programming, [sans the fear of shooting yourself in the foot](https://blog.rust-lang.org/2015/04/10/Fearless-Concurrency.html). The compiler catches data races and a number of other concurrency related problems at compile time rather than forcing you to try your luck and reproducing them at runtime
 * [Zero cost abstractions](https://blog.rust-lang.org/2015/05/11/traits.html)
@@ -35,37 +35,37 @@ As a project, it has the following goals
   * faster is better. minimal/no runtime. no garbage collection
 
 The combination of these things provides a language that suitable for both problems that require low level
-efficiency as well as solutions that prefer high level abstractions.
+efficiency as well as solutions that prefer high level abstractions, a rare combination.
 
 ---
 
 ## Why learn Rust?
 
-Rust more than a just new programming language. It takes new approaches to solve long standing
-and hard problems. These solutions make notable trade offs but also provide notable gains.
+Rust is more than a just new programming language. It takes new approaches to solve long standing
+and hard problems. These solutions make notable trade offs, but also provide notable gains.
 
-* Memory safety and efficiency are achieved by an alternative approach memory management.
- There is no runtime managing a garbage collection. Instead you have "Borrow" semantics.
+* Memory safety and efficiency are achieved by an alternative approach to memory management.
+ There is no runtime managing a garbage collection. Instead you have [borrow semantics](https://doc.rust-lang.org/book/references-and-borrowing.html).
 
-* Borrow semantics is a system that tracks the lifetime and ownership of objects through type parameterization. Because ownership is included in type information. Rust's compiler is able to predictably know when to deallocate memory when the owner goes out of scope. This has two benefits: it removes the need for any manual memory management on behavior of the programmer and it removes any need for a garbage collector. While advances in garbage collections have advanced over the years, their use was targeted on one way of solving a problem. Rust takes a new perspective that removes the need for garbage collection entirely.
+* Borrow semantics is a system that tracks the lifetime and ownership of objects through type parameterization. Because ownership is included in type information at compile time, Rust's compiler is able to predictably know when to deallocate memory when the owner goes out of scope. This has two benefits: it removes the need for any manual memory management on behavior of the programmer and it removes any need for a persistent garbage collector at runtime at all. While advances in garbage collections have advanced over the years, their use targets on one way of solving a problem. Rust takes a new approach that removes the need for garbage collection entirely.
 
 * Because object lifetime information is available at compile time, the compiler is able to detect and prevent, potentially dangerous access to mutable references across multiple concurrent threads. This prevents an entire class of defects that may lie dormant but ever present within existing software written in other languages tackling concurrent problems.
 
 * Rust's compilation backend leverages the work of [LLVM](http://llvm.org/). Optimizations for producing cost effective and efficient machine code are made within that pipeline.
 
-* Unlike the JVM, Rust defaults to stack allocation for memory storage, rather than the heap. The notable difference is that the stack provides fast and cheap access to memory. The heap provides potentially segmented and slower access to memory. Learn more about stack vs heap allocation visit [here](https://doc.rust-lang.org/book/the-stack-and-the-heap.html)
+* Unlike the JVM, Rust defaults to stack allocation for memory storage, rather than the heap. The notable difference is that the stack provides fast and cheap access to memory. The heap provides potentially segmented and slower access to memory. Learn more about stack vs heap allocation [here](https://doc.rust-lang.org/book/the-stack-and-the-heap.html)
 
-* Rust has learned from past mistakes in other languages and makes strong attempts to avoid them. There is no `null` value. Instead you have Option semantics. There is no real notion of exceptions. Instead you have error semantics. Errors are just values. They are not special and can't be "thrown" around like a bull in a china shop. They can only be returned, just like any other value.
+* Rust has learned from past mistakes other languages have made and makes strong attempts to avoid them. Notably, there is no `null` value. Instead you have Option semantics. There is no real notion of exceptions. Instead you have error semantics. Errors are just values. They are not special and can't be "thrown" around like a bull in a china shop. They can only be returned, just like any other value.
 
 * Static type inference. It makes leveraging the usefulness of static typing practical.
 
-* Compile time, type level derivation. This sounds like witchcraft, but I assure it it is not.
+* Compile time, type level derivation. This sounds like witchcraft, but I assure it is not.
 
 ---
 
 ### Bonus features
 
-* Reputation for having a amazing and [friendly](https://www.rust-lang.org/en-US/conduct.html) [community](https://www.rust-lang.org/en-US/community.html)
+* Reputation for having an amazing and [friendly](https://www.rust-lang.org/en-US/conduct.html) [community](https://www.rust-lang.org/en-US/community.html)
 
 * Really nice toolchain right out of the box. `cargo {build, test, run, publish}`
 
@@ -73,9 +73,9 @@ and hard problems. These solutions make notable trade offs but also provide nota
 
 * Rust has been the most loved programming language for [two](https://twitter.com/rustlang/status/707952865067794432) [years](https://twitter.com/rustlang/status/707952865067794432) in a row according to an annual stack overflow developer survey
 
-* Fast growing [ecosystem](https://crates.io/).
+* Fast growing [ecosystem](https://crates.io/) of libraries
 
-* Rust's compiler will keep your programs clean. Warns on unused variables and unused imports. Warns on unnecessary mutability. Can be made to warn ( and even fail to compile ) on undocumented public interfaces. And many other things...
+* Rust's compiler will keep your programs clean. Warns on unused variables and unused imports. Warns on unnecessary mutability. Can be made to warn ( and even fail to compile ) on undocumented public interfaces. And many other things...!
 
 ---
 
@@ -87,7 +87,7 @@ and hard problems. These solutions make notable trade offs but also provide nota
 
 * Rust is designed for program correctness, making [impossible states impossible](https://www.youtube.com/watch?v=IcgmSRJHu_8) freeing up programmers from maintaining error prone code so they can focus on providing value
 
-* Rust is does not [compromise on efficiency](https://blog.rust-lang.org/2015/05/11/traits.html). It's a goal to provide high level abstractions are just as efficient as if you optimize them by hand.
+* Rust is does not [compromise on efficiency](https://blog.rust-lang.org/2015/05/11/traits.html). It's a goal to provide high level abstractions that are just as efficient as if you optimize them by hand.
 
 * Because Rust takes a new approach to existing problems, amazing new things are possible.
 
@@ -132,7 +132,7 @@ Rust will always provide at least two latest versions for use: `stable` and `nig
 
 If you use an IDE, you're IDE most likely already has integration for Rust via it's package manager or plugin system
 
-Visit [this website](https://areweideyet.com/) to get a sense of the current state of IDE support
+Visit [this website](https://areweideyet.com/) to get a sense of the current state of IDE support.
 
 ---
 
@@ -152,7 +152,7 @@ All Rust code is run as an executable binary application. These application are
 compiled down programs specialized to run on your native operating system.
 Rust calls these compilation "targets".
 
-An application is just a is noting more with a `main` function.
+An application is nothing more than a program with a `main` function.
 
 ```rust
 fn main() {
@@ -160,14 +160,14 @@ fn main() {
 }
 ```
 
-If you are new to functions. I'll explain that in more detail in just a bit.
-For now, just note that this is all you need to for the minimal rust application.
+If you are new to functions, don't worry. I'll explain that in more detail in just a bit.
+For now, just note that this is all you need to for the minimal Rust application.
 
 ---
 
 ### Bootstrapping and running applications
 
-While you could compile simple programs with rustc and run them, you will afford
+While you could compile simple programs with `rustc`, Rusts native compiler, and run them, you can afford
 yourself a greater velocity in future development using a higher level workflow.
 Cargo is the tool that will provide that workflow.
 
@@ -207,9 +207,9 @@ application ( with a `main` function )
 
 Feel free to use this application as a scratch pad. For exploring rust.
 
-You may also find [Rust playpen](https://play.rust-lang.org/) useful for exploration.
-Rust playpen also has some other interesting features, like seeing the assembly
-code that Rust's compiler generates. This is sometime helpful in understanding the differences
+You may also find [Rust playpen](https://play.rust-lang.org/) useful for exploration ( and sharing explorations ).
+Rust playpen also has some additional and interesting features, like being able to the assembly
+code that Rust's compiler generates. This is sometimes helpful in understanding the differences
 between code compiled in debug mode ( the default ) and release mode ( a further optimized format ).
 
 ---
@@ -218,10 +218,8 @@ between code compiled in debug mode ( the default ) and release mode ( a further
 
 Rust language can be divided into two categories of abstractions: data and behavior.
 
-In other languages you will often find the two intertwined in ways that cannot be separated. Mixing data and behavior is often a recipe for for awkward and poorly representative design: "a penguin is a bird that can not fly".
-It can also be very powerful, when used correctly, but such correctness can not be determined nor enforced by the compiler itself.
-Rust takes a proactive approach. In Rust, data and behavior are never mixed by design,
-they are composed.
+In other languages you will often find the two intertwined in ways that cannot be separated. Mixing data and behavior is often a recipe for awkward and poorly representative design: "a penguin is a bird that can not fly".
+It can also be very powerful, when used correctly, but such correctness can not be determined nor enforced by the compiler itself and enforcing correctness should be at the top of the list of requirements for a compiler. Rust takes a proactive approach. In Rust, data and behavior are never mixed by design. Instead, they are composed.
 
 Let's focus on data first.
 
@@ -241,7 +239,7 @@ The type of a piece of data determines it's shape, possible values, and size. Si
 Types of have names but you can also alias these names to something that may be more appropriate for your application
 
 ```rust
-type Age = i16;
+type Age = u16;
 ```
 
 The `type` keyword allows for that. This is also useful when you may wish to
@@ -265,16 +263,16 @@ Note that Rust is statically typed. Since values have types, Rust can often infe
 their static type without explicit annotation, given other type information in the surrounding environment. Rust will use all available type
 information in scope to order to determine an appropriate type to assign to the
 value. When there is a lack of concrete evidence, your program will fail to compile.
-In other languages the result is some times inferred to be a least common denominator
+In other languages, the result is sometimes resolved, unintentionally, to be a least common denominator
 type based on a type inheritance hierarchy. Rust doesn't not support a notion of
-inheritance hierarchy so your values will always be assigned to a non ambiguous type
+inheritance hierarchy so your values will always be assigned to a non-ambiguous and correct type
 in a compiled program.
 
 To be more explicit with your types you can add a suffix to your name that includes a `:` and
 an explicit type.
 
 ```rust
-let age: i16 = 32;
+let age: u16 = 32;
 ```
 
 ---
@@ -283,7 +281,7 @@ let age: i16 = 32;
 
 * `i8`, `i16`, `i32`, `i64`, `isize` signed types ( includes negative numbers )
 * `u8`, `u16`, `u32`, `u64`, `usize` unsigned types ( no negative numbers )
-* `f32`, `f64` floating point types (decimal points)
+* `f32`, `f64` floating point types ( decimal points )
 
 Why all these types!? You may ask. Recall that Rust aims to be memory efficient
 and has a dependency on knowing the size of types at compile time in order to provide certain
@@ -446,7 +444,7 @@ A struct is just a collection of named fields which may be primitives or an addi
 ```rust
 struct Person {
   name: String,
-  age: u32
+  age: u16
 }
 ```
 
@@ -466,7 +464,7 @@ let age = emma.age;
 As less common type of struct is called a "new type" struct. A new type struct
 
 ```rust
-struct Person(String, u32);
+struct Person(String, u16);
 ```
 
 New type structs sit somewhere in between structs and tuples. Like tuples,
@@ -489,7 +487,7 @@ those into account, typically through type parameterization.
 ```rust
 struct Person<'a> {
   name: &'a str,
-  age: u32
+  age: u16
 }
 let emma = Person {
   name: "emma",
@@ -512,7 +510,7 @@ enum Animal {
     },
     Person {
       name: String,
-      age: u32
+      age: u16
     }
 }
 ```
@@ -526,7 +524,7 @@ in just a bit.
 ### Behavior
 
 So how do we make data do anything interesting in Rust? The answer is `Traits`. Rust's
-behavioral surface area is decorated in a number of traits which define the capability of types
+behavioral surface area is sprinkled in a number of traits which define the capability of types
 . Capability is defined as an implementation of that behavior `Trait` for given type. These implementations are formally referred to as 'impls`
 To use these implementations in code evidence must be in scope.
 
@@ -559,7 +557,7 @@ println!("hello {}", Person { name: "emma".into(), age: 32});
 println!("hello {:?}", Person { name: "emma".into(), age: 32});
 ```
 
-Implementing Rust traits may seem onerous at first, but the idea behind their design is vary powerful.
+Implementing Rust all of these traits to add behvior do your data types may seem onerous at first, but the idea behind their design is very powerful.
 
 Some builtin Traits like `Debug`, `Clone`, `Copy`, and others can often be generated for you via a feature of Rust
 called "type derivation". That is to say, if Rust is able to derive an impl for all of the embedded types within your type,
@@ -573,6 +571,7 @@ struct Person {
   name: String,
   age: u32
 }
+
 println!("hello {:?}", Person { name: "emma".into(), age: 32});
 ```
 
@@ -583,13 +582,13 @@ Type level derivation is an extremely useful tool in reducing the amount of boil
 ### Inherent traits
 
 Rust defines a special kind of trait for types called an inherent trait. These differ from typical Traits in that they are defining
-behavioral interfaces for a type that are unique to that type.
+behavioral interfaces for a type that are unique to just that type.
 
 Inherent traits look like this
 
 ```rust
 impl YourType {
-   ...
+   //...
 }
 ```
 
@@ -597,7 +596,7 @@ While a typical trait impl would look like
 
 ```rust
 impl YourBehavior for YourType {
- ...
+ //...
 }
 ```
 
@@ -605,8 +604,8 @@ It it said that the interface is "inherent" to the type, hence the name.
 
 A common use of an inherent trait is to define factory and helper methods for your type.
 A common pattern is to define a `new` method that hides the implementation of how a struct
-is constructed. Don't confuse this with the `new` keyword in other languages. The name `new`
-is mearly just a common convention.
+gets constructed. Don't confuse this with the `new` keyword in other languages. The name `new`
+is merely just a common convention.
 
 ```rust
 impl Person {
@@ -639,7 +638,7 @@ trait Read {
 }
 ```
 
-> note: In Rust mutability and references are part of a types identity. By Default data created is owned and immutable. These properties play into
+> note: In Rust mutability and references are part of a type's identity. By default, data created is owned and immutable. These properties play into
 the reference types trait methods are defined for. For instance if a trait method is defined for a reference to a mutable
 instance of this type, it will be a compile error to call this method an and owned immutable reference.
 
@@ -671,7 +670,7 @@ Armed with an `impl`, your `Person` can now read.
 emma.read(&book);
 ```
 
-You will sometimes need restrict implementations to types that also implement some other behavior.
+You will sometimes need to restrict implementations to types that also implement some other behavior.
 This provides you certain guarantees when your default implementation needs to know more about the abstract
 type which will fill in the rest of implementation.
 
@@ -757,7 +756,7 @@ pub mod bar;
 ```
 
 It may also be the case that you want to hide your package structure but publish
-a subset of types within those modules. This pattern is called [re-exporting](https://doc.rust-lang.org/book/crates-and-modules.html#re-exporting-with-pub-use)
+a subset of types within those modules. This pattern is called [re-exporting](https://doc.rust-lang.org/book/crates-and-modules.html#re-exporting-with-pub-use).
 
 ```rust
 // lib.rs
@@ -767,7 +766,7 @@ pub use foo::FooType;
 pub use bar::BarType;
 ```
 
-This also simplifies the surface area of your library users interact with and need to know
+This also simplifies the surface area of your library users can interact with and need to know
 about so its a good pattern to keep in mind.
 
 The highest unit of compilation is called a crate. A crate is just a collection of modules intended for
