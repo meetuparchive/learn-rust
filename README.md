@@ -27,6 +27,7 @@ recommendations. Additions are welcome!
 
 Links from language x to rust
 
+* [Go, Haskell, Javascript](https://github.com/mgattozzi/rust-from-lang)
 * [Python](https://github.com/rochacbruno/py2rs)
 
 ### resources to follow
