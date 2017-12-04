@@ -20,6 +20,7 @@ recommendations. Additions are welcome!
 
 * [The Rust Book](https://doc.rust-lang.org/book/) for a firm understanding of the design goals and decisions made to meet those goals in the language.
 * [Rust By Example](http://rustbyexample.com/) a handful of practical examples to demonstrate common needs
+* [Learning Rust](https://medium.com/learning-rust)
 * [FAQ](https://www.rust-lang.org/en-US/faq.html)
 
 ### resources to follow
