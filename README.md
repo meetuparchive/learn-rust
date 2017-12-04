@@ -23,6 +23,12 @@ recommendations. Additions are welcome!
 * [Learning Rust](https://medium.com/learning-rust)
 * [FAQ](https://www.rust-lang.org/en-US/faq.html)
 
+### Where you come from
+
+Links from language x to rust
+
+* [Python](https://github.com/rochacbruno/py2rs)
+
 ### resources to follow
 
 * [@rustlang](https://twitter.com/rustlang) the official language twitter account
