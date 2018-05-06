@@ -327,7 +327,7 @@ Arrays represent a fixed size collection of things that have the same type.
 let seats = [1, 2, 3];
 ```
 
-There's a string emphasis on _fixed size_ here. The size is explicitly part of its type.
+There's a strong emphasis on _fixed size_ here. The size is explicitly part of its type.
 
 ```rust
 let seats: [i32; 3] = [1, 2, 3];
