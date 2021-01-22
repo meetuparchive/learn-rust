@@ -42,7 +42,7 @@ Links from language x to rust
 * [/r/rust](https://www.reddit.com/r/rust) community feedback loops
 * [stackoverflow](http://stackoverflow.com/questions/tagged/rust) questions... answered
 * [Rust nyc](https://www.meetup.com/rust-nyc/) IRL rustaceans, right in your back yard!
-
+* [Rust Discord Server](https://discord.com/invite/rust-lang) Official Rust-lang discord server.
 ### conferences
 
 * [Rustconf](http://rustconf.com/)
